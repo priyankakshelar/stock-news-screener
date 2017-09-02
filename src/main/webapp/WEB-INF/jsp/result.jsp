@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-		Welcome here
+  This is news page ...........
 </body>
 </html>
