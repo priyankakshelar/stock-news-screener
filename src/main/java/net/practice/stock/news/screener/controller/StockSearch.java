@@ -14,4 +14,11 @@ public class StockSearch {
   public void setSelectedStock(String selectedStock) {
     this.selectedStock = selectedStock;
   }
+
+  @Override
+  public String toString() {
+    return "StockSearch{" +
+      "selectedStock='" + selectedStock + '\'' +
+      '}';
+  }
 }
