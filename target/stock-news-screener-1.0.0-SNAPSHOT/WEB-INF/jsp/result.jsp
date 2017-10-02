@@ -7,6 +7,6 @@
 </head>
 <body>
   This is news page ...........
-    Selected stock is ${stock.getSelectedStock}
+    Selected stock is ${stock.getSelectedStock()}
 </body>
 </html>
