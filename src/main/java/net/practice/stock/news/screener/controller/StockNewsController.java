@@ -3,6 +3,7 @@ package net.practice.stock.news.screener.controller;
 import net.practice.stock.news.screener.entity.Keyword;
 import net.practice.stock.news.screener.entity.Stock;
 import net.practice.stock.news.screener.service.KeywordService;
+import net.practice.stock.news.screener.service.NewsService;
 import net.practice.stock.news.screener.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,12 +24,16 @@ public class StockNewsController {
   @Autowired
   private KeywordService keywordService;
 
+  @Autowired
+  private NewsService newsService;
+
   @RequestMapping("/")
   public String index(Model model) {
     List<Stock> stocks = stockService.findAllStocks();
     Map<String, String> stockSymbolToNameMap = getStockSymbolToNameMap(stocks);
     model.addAttribute("stockOptions", stockSymbolToNameMap);
     model.addAttribute("stock", new StockSearch());
+    newsService.getAllNews();
     return "search";
   }
 

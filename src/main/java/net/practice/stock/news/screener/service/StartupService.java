@@ -20,6 +20,7 @@ import java.util.Set;
  */
 @Component
 public class StartupService {
+
   @Autowired
   private KeywordRepository keywordRepository;
   @Autowired
