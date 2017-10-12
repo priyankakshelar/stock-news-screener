@@ -38,10 +38,10 @@ public class StockNewsController {
     return "search";
   }
 
-// method to convert list to map
+  // method to convert list to map
   private Map<String, String> getStockSymbolToNameMap(List<Stock> stocks) {
     Map<String, String> stockSymbolToNameMap = new HashMap<String, String>();
-    for (Stock stock: stocks) {
+    for (Stock stock : stocks) {
       stockSymbolToNameMap.put(stock.getSymbol(), stock.getName());
     }
     return stockSymbolToNameMap;
@@ -49,29 +49,13 @@ public class StockNewsController {
 
   @RequestMapping(value = "/search-news", method = RequestMethod.POST)
   public String getResult(StockSearch stock, Model model) {
-    //System.out.println("stock " + stock);
     model.addAttribute("stock", stock);
     List<Keyword> keywords = keywordService.getAllKeyword();
-    Map<String, String> keywordSymbolToNameMap = new HashMap();
+    Map<String, String> keywordSymbolToNameMap = new HashMap<>();
     for (Keyword keyword : keywords) {
       keywordSymbolToNameMap.put(keyword.getKeyword(), keyword.getStockSymbol());
-     // System.out.println("\nKEYWORDS..." + keywordSymbolToNameMap);
     }
-
     return "result";
   }
 }
 
- /* @RequestMapping(value="/serch-keyword",method = RequestMethod.POST)
-  public String findKeyword(Model model) {
-    List<Keyword> keywords = keywordService.getAllKeyword();
-    Map<String,String> keywordSymbolToNameMap=new HashMap();
-    for(Keyword keyword:keywords){
-      keywordSymbolToNameMap.put(keyword.getKeyword(),keyword.getStockSymbol());
-      System.out.println("KEYWORDS..."+keyword);
-    }
-    return "search";
-
-  }
-  }
-*/

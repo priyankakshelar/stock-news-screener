@@ -21,14 +21,11 @@ public class KeywordServiceImpl implements KeywordService {
   @Override
   public List<Keyword> getAllKeyword() {
     Iterator<Keyword> keywordIterable = keywordRepository.findAll().iterator();
-    List<Keyword> keywords = new ArrayList();
-    while (keywordIterable.hasNext()){
-      Keyword keyword=keywordIterable.next();
+    List<Keyword> keywords = new ArrayList<>();
+    while (keywordIterable.hasNext()) {
+      Keyword keyword = keywordIterable.next();
       keywords.add(keyword);
-
     }
-    System.out.println("\nfrom database ....." +keywords);
     return keywords;
-
   }
 }

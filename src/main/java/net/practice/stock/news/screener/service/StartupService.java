@@ -23,12 +23,12 @@ public class StartupService {
 
   @Autowired
   private KeywordRepository keywordRepository;
+
   @Autowired
   private StockRepository stockRepository;
 
   @PostConstruct
   public void init() throws IOException {
-    System.out.println("After constructor....");
     Long count = stockRepository.count();
     if (count == 0) {
       loadStock("stocks.csv");
@@ -49,7 +49,6 @@ public class StartupService {
       Keyword keyword = createKeyword(stock);
       stockKeywords.add(keyword);
     }
-    System.out.println(stocks);
     stockRepository.save(stocks);
     keywordRepository.save(stockKeywords);
   }

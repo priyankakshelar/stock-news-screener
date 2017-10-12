@@ -4,6 +4,7 @@ import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import net.practice.stock.news.screener.entity.Keyword;
 import net.practice.stock.news.screener.entity.News;
 import net.practice.stock.news.screener.repository.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,10 @@ public class NewsServiceImpl implements NewsService {
   @Autowired
   private NewsRepository newsRepository;
 
+  @Autowired
+  private KeywordService keywordService;
+  // 1. inject keywordservice
+
   @Value("${news.rss.feed.urls}")
   private String[] urls;
 
@@ -43,7 +48,7 @@ public class NewsServiceImpl implements NewsService {
 
   @Override
   public void loadNews() {
-    for(String url : urls) {
+    for (String url : urls) {
       loadNews(url);
     }
   }
@@ -64,14 +69,28 @@ public class NewsServiceImpl implements NewsService {
   private List<News> toNewsList(List<SyndEntry> entries) {
     List<News> newsList = new ArrayList<>();
     for (SyndEntry entry : entries) {
-      News news = new News();
-      news.setTitle(entry.getTitle());
-      news.setDescription(entry.getDescription().getValue());
-      news.setPublishDate(entry.getPublishedDate());
-      newsList.add(news);
+      String symbol = getSymbol(entry.getTitle());
+      if (symbol != null) {
+        News news = new News();
+        news.setTitle(entry.getTitle());
+        news.setDescription(entry.getDescription().getValue());
+        news.setPublishDate(entry.getPublishedDate());
+        news.setSymbol(symbol);
+        newsList.add(news);
+      }
     }
     return newsList;
   }
 
+  private String getSymbol(String title) {
+    List<Keyword> keywordList = keywordService.getAllKeyword();
+    for (Keyword keyword : keywordList) {
+      boolean contains = title.contains(keyword.getKeyword());
+      if (contains) {
+        return keyword.getStockSymbol();
+      }
+    }
+    return null;
+  }
 
 }
