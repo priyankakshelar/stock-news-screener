@@ -1,10 +1,17 @@
 package net.practice.stock.news.screener.service;
 
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
 import net.practice.stock.news.screener.entity.News;
 import net.practice.stock.news.screener.repository.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,20 +20,58 @@ import java.util.List;
  * @author sameer
  */
 @Component
+@PropertySource("classpath:application.properties")
 public class NewsServiceImpl implements NewsService {
+
   @Autowired
-  NewsRepository newsRepository;
+  private NewsRepository newsRepository;
+
+  @Value("${news.rss.feed.urls}")
+  private String[] urls;
 
   @Override
   public List<News> getAllNews() {
-    Iterator <News> newsIterator = newsRepository.findAll().iterator();
+    Iterator<News> newsIterator = newsRepository.findAll().iterator();
     List<News> news = new ArrayList<>();
-    while ( newsIterator.hasNext()){
-     News n= newsIterator.next();
-     news.add(n);
-      System.out.println("News...  "+n);
+    while (newsIterator.hasNext()) {
+      News n = newsIterator.next();
+      news.add(n);
     }
 
     return news;
   }
+
+  @Override
+  public void loadNews() {
+    for(String url : urls) {
+      loadNews(url);
+    }
+  }
+
+  private void loadNews(String url) {
+    try {
+      URL feedUrl = new URL(url);
+      SyndFeedInput input = new SyndFeedInput();
+      SyndFeed feed = input.build(new XmlReader(feedUrl));
+      List<SyndEntry> entries = feed.getEntries();
+      List<News> newsList = toNewsList(entries);
+      newsRepository.save(newsList);
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  private List<News> toNewsList(List<SyndEntry> entries) {
+    List<News> newsList = new ArrayList<>();
+    for (SyndEntry entry : entries) {
+      News news = new News();
+      news.setTitle(entry.getTitle());
+      news.setDescription(entry.getDescription().getValue());
+      news.setPublishDate(entry.getPublishedDate());
+      newsList.add(news);
+    }
+    return newsList;
+  }
+
+
 }

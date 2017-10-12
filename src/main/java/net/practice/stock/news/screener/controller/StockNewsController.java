@@ -34,6 +34,7 @@ public class StockNewsController {
     model.addAttribute("stockOptions", stockSymbolToNameMap);
     model.addAttribute("stock", new StockSearch());
     newsService.getAllNews();
+    newsService.loadNews();
     return "search";
   }
 
