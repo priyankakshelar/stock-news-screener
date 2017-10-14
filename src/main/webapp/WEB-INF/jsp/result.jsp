@@ -4,14 +4,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-
+<title>News Result</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" int
 </head>
 <body>
 <div class="container">
-
-<h1>    News [${stock.getSelectedStock()}]</h1>
+<h1>News [${newsSearch.getSelectedStock()}]</h1>
 <hr>
     <ul class="list-group">
         <c:forEach items="${newsList}" var="news">

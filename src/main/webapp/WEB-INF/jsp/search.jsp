@@ -13,9 +13,9 @@
 
 <body>
 <div class="container">
-<h1>Search Stock News</h1>
+<h1>News Search</h1>
 <hr>
-<form:form method="POST" commandName="stock" action="search-news">
+<form:form method="POST" commandName="newsSearch" action="search-news">
 <div class="form-group">
 <label for="stock">Stock</label>
 <form:select id="stock" class="form-control" path="selectedStock">

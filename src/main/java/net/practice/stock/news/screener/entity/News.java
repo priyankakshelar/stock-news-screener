@@ -3,9 +3,6 @@ package net.practice.stock.news.screener.entity;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * @author sameer
- */
 @Entity
 @Table(name = "news")
 public class News {

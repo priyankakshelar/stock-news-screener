@@ -4,9 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * @author sameer
- */
 @Entity
 @Table(name = "stock")
 public class Stock implements Comparable<Stock> {

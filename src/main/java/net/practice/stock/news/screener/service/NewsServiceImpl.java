@@ -14,12 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-/**
- * @author sameer
- */
 @Component
 @PropertySource("classpath:application.properties")
 public class NewsServiceImpl implements NewsService {
@@ -29,28 +25,21 @@ public class NewsServiceImpl implements NewsService {
 
   @Autowired
   private KeywordService keywordService;
-  // 1. inject keywordservice
 
   @Value("${news.rss.feed.urls}")
   private String[] urls;
-
-  @Override
-  public List<News> getAllNews() {
-    Iterator<News> newsIterator = newsRepository.findAll().iterator();
-    List<News> news = new ArrayList<>();
-    while (newsIterator.hasNext()) {
-      News n = newsIterator.next();
-      news.add(n);
-    }
-
-    return news;
-  }
 
   @Override
   public void loadNews() {
     for (String url : urls) {
       loadNews(url);
     }
+  }
+
+  @Override
+  public List<News> findNews(String symbol) {
+    List<News> newsList = newsRepository.findBySymbol(symbol);
+    return newsList;
   }
 
   private void loadNews(String url) {
@@ -91,12 +80,5 @@ public class NewsServiceImpl implements NewsService {
       }
     }
     return null;
-  }
-
-  @Override
-  public List<News> findNews(String symbol) {
-    List<News> newsList = newsRepository.findBySymbol(symbol);
-
-    return newsList;
   }
 }

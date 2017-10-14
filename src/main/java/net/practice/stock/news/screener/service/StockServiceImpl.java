@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @author sameer
- */
 @Component
 public class StockServiceImpl implements StockService {
 

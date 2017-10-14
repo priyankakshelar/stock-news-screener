@@ -1,9 +1,6 @@
 package net.practice.stock.news.screener.controller;
 
-/**
- * @author sameer
- */
-public class StockSearch {
+public class NewsSearch {
 
   private String selectedStock;
 
@@ -17,7 +14,7 @@ public class StockSearch {
 
   @Override
   public String toString() {
-    return "StockSearch{" +
+    return "NewsSearch{" +
       "selectedStock='" + selectedStock + '\'' +
       '}';
   }

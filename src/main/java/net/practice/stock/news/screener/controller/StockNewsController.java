@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Controller
 public class StockNewsController {
@@ -30,12 +32,18 @@ public class StockNewsController {
     List<Stock> stocks = stockService.findAllStocks();
     Map<String, String> stockSymbolToNameMap = getStockSymbolToNameMap(stocks);
     model.addAttribute("stockOptions", stockSymbolToNameMap);
-    model.addAttribute("stock", new StockSearch());
-    newsService.loadNews();
+    model.addAttribute("newsSearch", new NewsSearch());
     return "search";
   }
 
-  // method to convert list to map
+  @RequestMapping(value = "/search-news", method = RequestMethod.POST)
+  public String getResult(NewsSearch newsSearch, Model model) {
+    List<News> news = newsService.findNews(newsSearch.getSelectedStock());
+    model.addAttribute("newsSearch", newsSearch);
+    model.addAttribute("newsList", news);
+    return "result";
+  }
+
   private Map<String, String> getStockSymbolToNameMap(List<Stock> stocks) {
     Map<String, String> stockSymbolToNameMap = new TreeMap<>();
     for (Stock stock : stocks) {
@@ -43,14 +51,5 @@ public class StockNewsController {
     }
     return stockSymbolToNameMap;
   }
-
-  @RequestMapping(value = "/search-news", method = RequestMethod.POST)
-  public String getResult(StockSearch stock, Model model) {
-    List<News> news = newsService.findNews(stock.getSelectedStock());
-    model.addAttribute("stock", stock);
-    model.addAttribute("newsList",news);
-    return "result";
-  }
-
 }
 

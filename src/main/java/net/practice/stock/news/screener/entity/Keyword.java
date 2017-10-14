@@ -2,9 +2,6 @@ package net.practice.stock.news.screener.entity;
 
 import javax.persistence.*;
 
-/**
- * @author sameer
- */
 @Entity
 @Table(name = "stock_keyword")
 public class Keyword {
