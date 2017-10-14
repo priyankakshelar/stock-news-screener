@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface NewsService {
   List<News> getAllNews();
-
+  List<News> findNews(String symbol);
   void loadNews();
+
 }

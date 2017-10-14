@@ -93,4 +93,10 @@ public class NewsServiceImpl implements NewsService {
     return null;
   }
 
+  @Override
+  public List<News> findNews(String symbol) {
+    List<News> newsList = newsRepository.findBySymbol(symbol);
+
+    return newsList;
+  }
 }

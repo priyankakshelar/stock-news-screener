@@ -9,7 +9,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "stock")
-public class Stock {
+public class Stock implements Comparable<Stock> {
 
   @Id
   private String symbol;
@@ -60,5 +60,9 @@ public class Stock {
       '}';
   }
 
+  @Override
+  public int compareTo(Stock o) {
+    return name.compareTo(o.getName());
+  }
 }
 
