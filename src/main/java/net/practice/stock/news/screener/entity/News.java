@@ -1,6 +1,9 @@
 package net.practice.stock.news.screener.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
@@ -8,22 +11,13 @@ import java.util.Date;
 public class News {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
+  private String link;
   private String title;
   private String description;
   private String symbol;
   @Column(name = "publish_date")
   private Date publishDate;
 
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
 
   public String getTitle() {
     return title;
@@ -57,10 +51,19 @@ public class News {
     this.publishDate = publishDate;
   }
 
+
+  public String getLink() {
+    return link;
+  }
+
+  public void setLink(String link) {
+    this.link = link;
+  }
+
   @Override
   public String toString() {
     return "News{" +
-      "id=" + id +
+      "link='" + link + '\'' +
       ", title='" + title + '\'' +
       ", description='" + description + '\'' +
       ", symbol='" + symbol + '\'' +

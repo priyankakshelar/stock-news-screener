@@ -64,7 +64,9 @@ public class NewsServiceImpl implements NewsService {
         news.setTitle(entry.getTitle());
         news.setDescription(entry.getDescription().getValue());
         news.setPublishDate(entry.getPublishedDate());
+        news.setLink(entry.getLink());
         news.setSymbol(symbol);
+
         newsList.add(news);
       }
     }

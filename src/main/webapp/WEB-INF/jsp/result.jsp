@@ -13,7 +13,7 @@
 <hr>
     <ul class="list-group">
         <c:forEach items="${newsList}" var="news">
-            <li class="list-group-item"> ${news.title} </li>
+            <li class="list-group-item"> <a href="${news.link}" target="_blank">${news.title}</a></li>
         </c:forEach>
     </ul>
 </div>
