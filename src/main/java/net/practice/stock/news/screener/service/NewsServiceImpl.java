@@ -13,7 +13,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -37,9 +39,15 @@ public class NewsServiceImpl implements NewsService {
   }
 
   @Override
-  public List<News> findNews(String symbol) {
-    List<News> newsList = newsRepository.findBySymbol(symbol);
-    return newsList;
+  public List<News> findNews(String symbol, Date startDate, Date endDate) throws ParseException {
+    if (!"-".equals(symbol) && startDate != null && endDate != null) {
+      return newsRepository.findBySymbolAndDate(symbol, startDate, endDate);
+    } else if (startDate != null && endDate != null) {
+      return newsRepository.findByDate(startDate, endDate);
+    } else if (symbol != null) {
+      return newsRepository.findBySymbol(symbol);
+    }
+    return null;
   }
 
   private void loadNews(String url) {
@@ -66,7 +74,6 @@ public class NewsServiceImpl implements NewsService {
         news.setPublishDate(entry.getPublishedDate());
         news.setLink(entry.getLink());
         news.setSymbol(symbol);
-
         newsList.add(news);
       }
     }

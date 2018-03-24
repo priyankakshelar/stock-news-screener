@@ -8,9 +8,15 @@ import net.practice.stock.news.screener.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -29,27 +35,39 @@ public class StockNewsController {
 
   @RequestMapping("/")
   public String index(Model model) {
-    List<Stock> stocks = stockService.findAllStocks();
-    Map<String, String> stockSymbolToNameMap = getStockSymbolToNameMap(stocks);
-    model.addAttribute("stockOptions", stockSymbolToNameMap);
     model.addAttribute("newsSearch", new NewsSearch());
     return "search";
   }
 
   @RequestMapping(value = "/search-news", method = RequestMethod.POST)
-  public String getResult(NewsSearch newsSearch, Model model) {
-    List<News> news = newsService.findNews(newsSearch.getSelectedStock());
-    model.addAttribute("newsSearch", newsSearch);
-    model.addAttribute("newsList", news);
-    return "result";
+  public String getResult(@Valid NewsSearch newsSearch, BindingResult theBindingResult, Model model) throws ParseException {
+    if (theBindingResult.hasErrors()) {
+      return "search";
+    } else {
+      List<News> news = newsService.findNews(newsSearch.getSelectedStock(), toDate(newsSearch.getStartDate()), toDate(newsSearch.getEndDate()));
+      model.addAttribute("newsSearch", newsSearch);
+      model.addAttribute("newsList", news);
+      return "result";
+    }
+  }
+
+  @ModelAttribute("stockOptions")
+  public Map<String, String> initStockOptions() {
+    List<Stock> stocks = stockService.findAllStocks();
+    return getStockSymbolToNameMap(stocks);
   }
 
   private Map<String, String> getStockSymbolToNameMap(List<Stock> stocks) {
     Map<String, String> stockSymbolToNameMap = new TreeMap<>();
     for (Stock stock : stocks) {
-      stockSymbolToNameMap.put(stock.getSymbol(), stock.getName());
+      stockSymbolToNameMap.put(stock.getSymbol(), stock.getName());/////////////
     }
     return stockSymbolToNameMap;
+  }
+
+  private Date toDate(String input) throws ParseException {
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    return simpleDateFormat.parse(input);
   }
 }
 

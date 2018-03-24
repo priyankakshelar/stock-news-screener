@@ -19,11 +19,21 @@
 <div class="form-group">
 <label for="stock">Stock</label>
 <form:select id="stock" class="form-control" path="selectedStock">
-<form:option value="-" label="--Select stock"/>
+<form:option value="-" label="Select stock"/>
 <form:options items="${stockOptions}" />
 </form:select>
+<br>
+
+<label for "startDate">Start Date</label>
+<form:input id="date" path="startDate" placeholder="yyyy-MM-dd"/>
+<label for "endDate">End Date</label>
+<form:input id="date" path="endDate" placeholder="yyyy-MM-dd"/>
 </div>
 <button type="submit" class="btn btn-primary">Submit</button>
+
+<form:errors path="selectedStock"/>
+<form:errors path="startDate"/>
+<form:errors path="endDate"/>
 </form:form>
 </div>
 </body>

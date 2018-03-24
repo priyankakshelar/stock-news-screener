@@ -3,6 +3,7 @@ package net.practice.stock.news.screener.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "stock")
@@ -10,6 +11,7 @@ public class Stock implements Comparable<Stock> {
 
   @Id
   private String symbol;
+  @NotNull(message = "is required")
   private String name;
 
   public Stock() {
