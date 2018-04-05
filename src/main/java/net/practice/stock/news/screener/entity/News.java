@@ -18,6 +18,16 @@ public class News {
   @Column(name = "publish_date")
   private Date publishDate;
 
+  public News() {
+  }
+
+  public News(String link, String title, String description, String symbol, Date publishDate) {
+    this.link = link;
+    this.title = title;
+    this.description = description;
+    this.symbol = symbol;
+    this.publishDate = publishDate;
+  }
 
   public String getTitle() {
     return title;

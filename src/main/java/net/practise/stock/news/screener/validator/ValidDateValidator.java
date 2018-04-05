@@ -1,4 +1,5 @@
 package net.practise.stock.news.screener.validator;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.text.ParseException;
@@ -11,16 +12,6 @@ public class ValidDateValidator implements ConstraintValidator<ValidDate, String
 
   private String format;
 
-  @Override
-  public void initialize(ValidDate validDate) {
-    this.format = validDate.format();
-  }
-
-  @Override
-  public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-    return isValidFormat(format, value);
-  }
-
   private static boolean isValidFormat(String format, String value) {
     SimpleDateFormat sdf = new SimpleDateFormat(format);
     try {
@@ -29,6 +20,16 @@ public class ValidDateValidator implements ConstraintValidator<ValidDate, String
     } catch (ParseException e) {
       return false;
     }
+  }
+
+  @Override
+  public void initialize(ValidDate validDate) {
+    this.format = validDate.format();
+  }
+
+  @Override
+  public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
+    return isValidFormat(format, value);
   }
 }
 

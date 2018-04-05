@@ -20,7 +20,6 @@ public class KeywordServiceImplTest {
 
   @Mock
   private KeywordRepository keywordRepository;
-
   @InjectMocks
   private KeywordService keywordService = new KeywordServiceImpl();
 
@@ -28,7 +27,6 @@ public class KeywordServiceImplTest {
   public void setUp() throws Exception {
     MockitoAnnotations.initMocks(this);
   }
-  Keyword keyword =new Keyword();
 
   @Test
   public void testGetAllKeyword() throws Exception {
@@ -40,15 +38,18 @@ public class KeywordServiceImplTest {
 
     // then
     //assert
-    Assert.assertEquals(1,keywords.size());
+    Assert.assertEquals(2, keywords.size());
+    Keyword keyword = keywords.get(0);
     Assert.assertEquals(new Integer(1), keyword.getId());
   }
 
   public List<Keyword> getKeywordList() {
-    List<Keyword> keywords =new ArrayList<>();
-    keyword.setId(1);
+    List<Keyword> keywords = new ArrayList<>();
+    Keyword infyKeyword = new Keyword(1, "infosys", "INFY");
+    keywords.add(infyKeyword);
+    Keyword tcsKeyword = new Keyword(1, "tcs", "TCS");
+    keywords.add(tcsKeyword);
 
-    keywords.add(keyword);
     return keywords;
   }
 }

@@ -8,7 +8,6 @@ import net.practice.stock.news.screener.entity.Keyword;
 import net.practice.stock.news.screener.entity.News;
 import net.practice.stock.news.screener.repository.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
@@ -28,11 +27,16 @@ public class NewsServiceImpl implements NewsService {
   @Autowired
   private KeywordService keywordService;
 
-  @Value("${news.rss.feed.urls}")
-  private String[] urls;
+  public NewsServiceImpl() {
+  }
+
+  public NewsServiceImpl(NewsRepository newsRepository, KeywordService keywordService) {
+    this.newsRepository = newsRepository;
+    this.keywordService = keywordService;
+  }
 
   @Override
-  public void loadNews() {
+  public void loadNews(String[] urls) {
     for (String url : urls) {
       loadNews(url);
     }
@@ -44,10 +48,10 @@ public class NewsServiceImpl implements NewsService {
       return newsRepository.findBySymbolAndDate(symbol, startDate, endDate);
     } else if (startDate != null && endDate != null) {
       return newsRepository.findByDate(startDate, endDate);
-    } else if (symbol != null) {
+    } else if (!"-".equals(symbol)) {
       return newsRepository.findBySymbol(symbol);
     }
-    return null;
+    throw new IllegalArgumentException("symbol: " + symbol + ", startDate: " + startDate + ", endDate: " + endDate);
   }
 
   private void loadNews(String url) {
@@ -69,10 +73,10 @@ public class NewsServiceImpl implements NewsService {
       String symbol = getSymbol(entry.getTitle());
       if (symbol != null) {
         News news = new News();
-        news.setTitle(entry.getTitle());
-        news.setDescription(entry.getDescription().getValue());
+        news.setTitle(entry.getTitle().trim());
+        news.setDescription(entry.getDescription().getValue().trim());
         news.setPublishDate(entry.getPublishedDate());
-        news.setLink(entry.getLink());
+        news.setLink(entry.getLink().trim());
         news.setSymbol(symbol);
         newsList.add(news);
       }

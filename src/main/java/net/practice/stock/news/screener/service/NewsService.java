@@ -10,5 +10,5 @@ public interface NewsService {
 
   List<News> findNews(String symbol, Date startDate, Date endDate) throws ParseException;
 
-  void loadNews();
+  void loadNews(String[] urls);
 }

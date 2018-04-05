@@ -9,9 +9,7 @@ public class Keyword {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
-
   private String keyword;
-
   @Column(name = "stock_symbol")
   private String stockSymbol;
 
@@ -19,6 +17,12 @@ public class Keyword {
   }
 
   public Keyword(String keyword, String stockSymbol) {
+    this.keyword = keyword;
+    this.stockSymbol = stockSymbol;
+  }
+
+  public Keyword(Integer id, String keyword, String stockSymbol) {
+    this.id = id;
     this.keyword = keyword;
     this.stockSymbol = stockSymbol;
   }
